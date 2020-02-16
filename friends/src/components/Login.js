@@ -1,62 +1,52 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { Spinner } from 'reactstrap';
 import {axiosWithAuth} from '../utils/axiosWithAuth'
 
-class Login extends React.Component {
-    state = {
-      credentials: {
-        username: '',
-        password: ''
-      }
+const Login = props => {
+  const [login, setLogin] = useState({username: '', password: ''});
+  const [loading, setLoading] = useState(false);
+  
+    const handleChange = e => {
+      setLogin({...login, [e.target.name]: e.target.vlaue});
     };
   
-    handleChange = e => {
-      this.setState({
-        credentials: {
-          ...this.state.credentials,
-          [e.target.name]: e.target.value
-        }
-      });
-    };
-  
-    login = e => {
+    const onSubmit= e =>{
       e.preventDefault();
+      setLoading(true);
+      setTimeout(()=>{
+        setLoading(false)
+      }, 3000);
       axiosWithAuth()
-        .post("/login", this.state.credentials)
-        .then(res => {
-          localStorage.setItem("token", res.data.payload);
-        //   this.props.history.push("/protected");
-        })
-        .catch(err => {
-          localStorage.removeItem("token");
-          console.log("invalid login: ", err);
-        });
+      .post('/login', login)
+      .then(res =>{
+        localStorage.setItem('token', res.data.payload);
+        setLogin(login);
+        props.history.push('/friends' || '/edit-friends');
+      })
+      .catch(err =>{
+        localStorage.removeItem('token');
+        console.log('The login failed', err);
+      }, []);
     };
   
   
-    render() {
-      return (
-        <div>
-          <form onSubmit={this.login}>
-            <input
-              type="text"
-              name="username"
-              placeholder='username'
-              value={this.state.credentials.username}
-              onChange={this.handleChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder='password'
-              value={this.state.credentials.password}
-              onChange={this.handleChange}
-            />
-            <button>Log in</button>
+    return (
+      <section className="login">
+        {!loading ? (
+          <form onSubmit={onSubmit}>
+            <input type="text" name="username" placeholder="Username" value={login.username} onChange={handleChange} />
+            <input type="password" name="password" placeholder="Password" value={login.password} onChange={handleChange} />
+            <button>Login</button>
           </form>
-        </div>
-      );
-    }
-  }
+        ) : (
+          <div>
+            <Spinner size="sm" color="success" />
+          </div>
+          )}
+      </section>
+      
+    );
+  };
   
   export default Login;
   
