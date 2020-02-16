@@ -18,6 +18,7 @@ function App() {
         <Switch>
         <ProtectedRoute exact path="/friends" component={FriendsList} />
           <ProtectedRoute exact path="/edit-friends" component={Edit} />
+          {/* For some reason cannot figure out how to edit in our friends list */}
           <Route path="/login" component={Login} />
           <Route component={Login} />
         </Switch>

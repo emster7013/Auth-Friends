@@ -3,7 +3,7 @@ import { Spinner } from 'reactstrap';
 import {axiosWithAuth} from '../utils/axiosWithAuth'
 
 const Login = props => {
-  const [login, setLogin] = useState({username: '', password: ''});
+  const [login, setLogin] = useState({username: 'Lambda School', password: 'i<3Lambd4'});
   const [loading, setLoading] = useState(false);
   
     const handleChange = e => {
@@ -35,7 +35,9 @@ const Login = props => {
         {!loading ? (
           <form onSubmit={onSubmit}>
             <input type="text" name="username" placeholder="Username" value={login.username} onChange={handleChange} />
+            <br/>
             <input type="password" name="password" placeholder="Password" value={login.password} onChange={handleChange} />
+            <br/>
             <button>Login</button>
           </form>
         ) : (
