@@ -6,6 +6,7 @@ import styled from 'styled-components';
 const Loginpg= styled.div `
 background: #B32451;
 width: 70%;
+border: 15px solid black;
 height: 50vh;
 margin: 0 auto;
 text-align: center;
